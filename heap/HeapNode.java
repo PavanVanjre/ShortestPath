@@ -1,5 +1,3 @@
-//Pavan Vanjre Ravindranath
-// Student Id - 801352266
 package heap;
 
 public class HeapNode {
