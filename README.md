@@ -1,91 +1,115 @@
-Pavan Vanjre Ravindranath <br />
+# **Shortest Paths in a Network**
+---
 
-Programming Project 2 : Shortest Paths in a Network
+### **Overview**
+This project involves constructing a graph with given vertices and edges and finding the shortest path between any two vertices while considering conditions on edges and vertices. The primary goal is to implement **Dijkstra's Algorithm** to calculate the shortest paths efficiently and manage network changes dynamically.
 
-The programming project is about constructing the graph with given vertices and edges
-and finding the shortest path between any two vertices considering the edge and vertices condition.
-Shortest path is calculated using dijkstra algorithm.
+### **Features**
+1. **Graph Construction**: Build an adjacency list representation of the network graph.
+2. **Dijkstra's Algorithm**: Calculate the shortest path between vertices using non-negative weights.
+3. **Dynamic Graph Updates**:
+   - Add or delete edges.
+   - Mark edges and vertices as up or down.
+4. **Reachable Nodes**: Identify all reachable nodes from a given vertex using **Depth First Search (DFS)**.
+5. **Graph Display**: Print the graph in a specified format, indicating the status of vertices and edges.
+6. **Error Handling**: 
+   - Prompts for missing input files or incorrect commands.
+   - Ensures graph is built before queries are processed.
 
-Algorithm: Dijkstra 
-Input: A graph represented as an adjacency list and Non-negative weights associated with edges.
+---
 
-Initialization:
+### **Algorithm Details**
 
-Create a distance array to store the current shortest distance from the source to each node. <br />
-Initialize distances to all nodes as infinity, except for the source node (distance[source] = 0). <br />
-Use a priority queue or a min-heap to keep track of nodes with their current distance values.  <br />
+#### **1. Dijkstra's Algorithm**
+- **Input**: A graph represented as an adjacency list and non-negative edge weights.
+- **Output**: Shortest path and its total cost between two vertices.
+- **Steps**:
+  1. Initialize distances for all vertices (`infinity` except for the source).
+  2. Use a min-heap (priority queue) for efficient distance updates.
+  3. Relax edges and update neighbors iteratively.
+  4. Stop when all vertices are processed.
 
-Algorithm Steps:
+#### **2. Reachable Nodes**
+- Implemented using DFS:
+  - Marks nodes as visited and recursively explores all unvisited neighbors.
+  - Outputs reachable nodes for each vertex in alphabetical order.
 
-Start with the source node.  <br />
-For the current node, update the distances to its neighbors if a shorter path is found. <br />
-Add the neighbors to the priority queue.  <br />
-Extract the node with the smallest distance from the priority queue.  <br />
-Repeat steps 2-4 until all nodes have been processed.  <br />
+#### **Time Complexity**:
+- **Dijkstra's Algorithm**: \(O((V + E) \log V)\) using a binary heap.
+- **DFS**: \(O(V + E)\) per vertex.
 
+---
 
-To represent the graph the adjacency list is used and is implemented using a map, with vertex as key and list of edges as values for the key. <br />
-The Vertex is a Class which consist of name and a property isDown to check whether the vertex is down or not.
-The Edge  is a Class which consist of start and end vertex and weight associated with it. <br />
-The Graph class consist of different method like addVertex() to create a vertex, addEdge() to create the edge ,
-deleteEdge() to remove the edge from the graph,  printNetwork() to print the graph is specified format, dijkstra_GetMinDistances() method to calcuate and return the path between given two vertex that is optimal
-and findReachableNodesDFS() to list all possible vertices that can be reached with given vertex
+### **Implementation Details**
 
-To find all the reachable nodes, the DFS algorithm is used
+#### **Data Structures**
+- **Graph**: Represented using an adjacency list (map with vertex as the key and edges as the value).
+- **Vertex Class**:
+  - Stores vertex name and status (`up` or `down`).
+- **Edge Class**:
+  - Stores start vertex, end vertex, and weight.
+- **Graph Methods**:
+  - `addVertex()`: Create a new vertex.
+  - `addEdge()`: Add a directed edge between vertices.
+  - `deleteEdge()`: Remove a directed edge.
+  - `printNetwork()`: Print graph details.
+  - `dijkstra_GetMinDistances()`: Find shortest path between vertices.
+  - `findReachableNodesDFS()`: Identify reachable nodes.
 
-DFS(Graph G, Node start): <br />
-// Assume all nodes are initially unvisited <br />
-for each node v in G: <br />
-mark v as unvisited <br />
+#### **Folder Structure**
+- **Main Logic**: `ShortestPathNetwork.java`
+- **Supporting Classes**:
+  - `MinHeap.java` (for priority queue implementation).
+  - `HeapNode.java` (nodes used in the heap).
 
-  Start the DFS from the given node <br />
-  DFSVisit(start) <br />
+---
 
-DFSVisit(Node v): <br />
-// Mark the current node as visited <br />
-mark v as visited <br />
+### **Steps to Run**
 
-  Process the current node (optional) <br />
+1. **Compile the Program**:
+   ```bash
+   javac ShortestPathNetwork.java
+   ```
+2. **Run the Program**:
+    ```bash
+    java ShortestPathNetwork <network_file> <queries_file>
+    ```
+    - **Example**
+        ```bash
+        java ShortestPathNetwork network.txt queries.txt
+        ```
+3. Output:
+    - The results of the queries are written to ```Output.txt```.
 
-  Explore all adjacent nodes <br />
-    for each neighbor u of v: <br />
-        if u is unvisited: <br />
-            // Recursively visit the unvisited neighbor <br />
-            DFSVisit(u) <br />
+## Sample Input
 
-Time complexity: 
-The time complexity of DFS is O(|V+E|), but here we are finding for all vertices the
-time complexity would be O(|V(|V+E|)|).
+**network.txt**:
+```plaintext
+Belk Grigg 1.2
+Belk Health 0.5
+Duke Belk 0.6
+Belk Woodward 0.25
+...
+```
+**network.txt**:
+```plaintext
+addedge A B 1.5
+deleteedge A B
+path A B
+print
+reachable
+quit
+```
 
-Programming Language Used: JAVA  
-Compiler Version 21.0.1
+## What Works Well
+- Prompts the user to build the graph first before processing queries.
+- Successfully finds the shortest paths and reachable nodes.
+- Handles dynamic updates to vertices and edges.
+- Prints the graph, including the status of vertices and edges.
 
-Folder Structure <br />
-The main folder consist of ShortestPathNetwork.java which consist of all main logic for the code,
-and next consist of heap folder where code for min heap is present in MinHeap.java and code for heap node is present in HeapNode.java
+## Known Issues
+- Improper query formats result in an ArrayIndexOutOfBoundsException instead of a user-friendly error message.
+- No built-in mechanism for handling large datasets efficiently beyond the constraints of memory.
 
-Steps to run the programs <br />
-
-Firstly the ShortestPathNetwork.java file needs to be compiled using java command
-<br /> `javac ShortestPathNetwork.java`
-<br /> run the code using  along with the file name from which graph needs to build and file name from which queries come
-<br />`java ShortestPathNetwork network.txt queries.txt`
-
-[//]: # (Once the code is running, it accepts all information through command line.)
-
-[//]: # (Firstly to construct the graph the command)
-
-[//]: # (`graph <filename>`)
-
-[//]: # (needs to be given and then rest of the queries can be given)
-Once the code is running, it build the graph from the input file and then start reading each queries and prints the respective output to a "Output.txt" file.
-
-what work well  
-1) If queries are given without constructing the graph, it gives error and prompts the user to construct the graph first. 
-2) Finds the shortest distance and prints the path
-3) Finds all the reachable nodes at given time
-4) Prints the graph and indicates the vertices and edges that are down.
-
-what fails
-1) while giving the queries if the line of arguments dont match it gives array of of bound error, which needs to be handled to give proper error message.
-
+## Programming Language
+- Java, version 21.0.1
